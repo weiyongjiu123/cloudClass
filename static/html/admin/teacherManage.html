@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="/static/vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="/static/css/fontastic.css">
+
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="/static/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="/static/css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
+    <style>
+        .user-img{
+            width: 40px;
+            height: 40px;
+        }
+        .user-page{
+            padding: 4px 10px;
+            background-color: rgb(220,220,220);
+            border-radius: 5px;
+            border: 1px solid rgb(200,200,200);
+            margin-right: 7px;
+        }
+        .page-now{
+            background-color: white;
+        }
+    </style>
+</head>
+<body>
+<div class="page" id="app">
+    <!-- Main Navbar-->
+    <header class="header">
+        <nav class="navbar">
+            <!-- Search Box-->
+            <div class="search-box">
+                <button class="dismiss"><i class="icon-close"></i></button>
+                <form id="searchForm" action="#" role="search">
+                    <input type="search" placeholder="What are you looking for..." class="form-control">
+                </form>
+            </div>
+            <div class="container-fluid">
+                <div class="navbar-holder d-flex align-items-center justify-content-between">
+                    <!-- Navbar Header-->
+                    <div class="navbar-header">
+                        <!-- Navbar Brand --><a href="index.html" class="navbar-brand d-none d-sm-inline-block">
+                            <div class="brand-text d-none d-lg-inline-block"><strong>微云</strong><span>讲师后台 </span></div>
+                            <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>BD</strong></div></a>
+                        <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
+                    </div>
+                    <!-- Navbar Menu -->
+                    <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                        <!-- Search-->
+                        <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i class="icon-search"></i></a></li>
+                        <!-- Notifications-->
+                        <!-- Logout    -->
+                        <li class="nav-item"><a href="#" @click="logout(event)" class="nav-link logout"> <span class="d-none d-sm-inline">退出</span><i class="fa fa-sign-out"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="page-content d-flex align-items-stretch">
+        <!-- Side Navbar -->
+        <nav class="side-navbar">
+            <!-- Sidebar Header-->
+            <div class="sidebar-header d-flex align-items-center">
+                <div class="avatar"><img src="/static/img/teacher/default.jpg" alt="..." class="img-fluid rounded-circle"></div>
+                <div class="title">
+                    <h1 class="h4">管理员</h1>
+                    <p>超级管理员</p>
+                </div>
+            </div>
+            <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
+            <ul class="list-unstyled">
+                <li><a href="index.html"> <i class="icon-home"></i>主页 </a></li>
+                <li><a href="userManage.html"> <i class="fa fa-bar-chart"></i>用户管理 </a></li>
+                <li  class="active"><a href="teacherManage.html"> <i class="fa fa-bar-chart"></i>讲师管理 </a></li>
+                <li><a href="classManage.html"> <i class="icon-grid"></i>课程管理 </a></li>
+                <li><a href="typeManage.html"> <i class="fa fa-bar-chart"></i>课程类型 </a></li>
+                <li><a href="orderManage.html"> <i class="fa fa-bar-chart"></i>订单管理 </a></li>
+                <li><a href="couponManage.html"> <i class="icon-grid"></i>优惠卷管理 </a></li>
+                <li><a href="withdrawalManage.html"> <i class="fa fa-bar-chart"></i>提现申请 </a></li>
+                <li><a href="adManage.html"> <i class="icon-grid"></i>广告管理 </a></li>
+                <li><a href="complaintsManage.html"> <i class="icon-grid"></i>投诉管理 </a></li>
+                <li><a href="classCommManage.html"> <i class="icon-grid"></i>留言举报 </a></li>
+                <li><a href="questionManage.html"> <i class="icon-grid"></i>常见问题 </a></li>
+                <li><a href="settting.html"> <i class="icon-grid"></i>通用设置 </a></li>
+                <li><a href="teacherNotify.html"> <i class="icon-grid"></i>讲师通知 </a></li>
+            </ul>
+
+        </nav>
+        <div class="content-inner">
+            <!-- Page Header-->
+            <header class="page-header">
+                <div class="container-fluid">
+                    <h2 class="no-margin-bottom">讲师管理</h2>
+                </div>
+            </header>
+            <!-- Breadcrumb-->
+            <div class="breadcrumb-holder container-fluid">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">主页</a></li>
+                    <li class="breadcrumb-item active">讲师管理</li>
+                </ul>
+            </div>
+            <section class="tables">
+                <div class="container-fluid">
+                    <div class="row">
+
+                        <div class="col-lg-12">
+                            <div class="card">
+
+
+                                <div class="card-body">
+                                    <div class="input-group" style="margin-bottom: 10px;float: left;width: 274px">
+                                        <div class="input-group-prepend">
+                                            <button  type="button" class="btn btn-outline-secondary ">排序类型 <span class="caret"></span></button>
+                                        </div>
+                                        <div class="input-group-prepend">
+                                            <button data-toggle="dropdown" type="button"  class="btn btn-outline-secondary dropdown-toggle">{{sort.text}} <span class="caret"></span></button>
+                                            <div class="dropdown-menu">
+                                                <a href="#" class="dropdown-item" v-for="(item,index) in sortList" @click="selectSort(event,index)">{{item.text}}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-group" style="width: 240px;float: left;">
+                                        <input type="text" class="form-control" placeholder="请填讲师id" v-model.trim="keyword">
+                                        <div class="input-group-append">
+                                            <button type="button" class="btn btn-primary" onclick="vm.search()" >搜索</button>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive" >
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>序号</th>
+                                                <th>讲师Id</th>
+                                                <th>讲师名</th>
+                                                <th>电话号码</th>
+                                                <th>收益</th>
+                                                <th>不可移动金额</th>
+                                                <th>销售量</th>
+                                                <th>观看量</th>
+                                                <th>状态</th>
+                                                <th>加入时间</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="(item,index) in userList">
+                                                <th scope="row">{{index+1+pageNumber}}</th>
+                                                <td>{{item.id}}</td>
+                                                <td>{{item.name}}</td>
+                                                <td>{{item.phone}}</td>
+                                                <td>{{item.amount}} </td>
+                                                <td>{{item.unMoveAmount}}</td>
+                                                <td>{{item.sellCount}}</td>
+                                                <td>{{item.watchCount}}</td>
+                                                <td>
+                                                    <span v-if="!item.isBan">正常 <a href="#" @click="userBan(item.id,1,event,index)">禁止</a> </span>
+                                                    <span v-else>禁止 <a href="#" @click="userBan(item.id,0,event,index)">解禁</a> </span>
+                                                </td>
+                                                <td>{{item.createTime| date}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div style="text-align: center">
+                                        <span v-for="(item,index) in pageList">
+                                            <span class="user-page page-now" v-if="item.now">{{item.text}}</span>
+                                             <a v-else class="user-page" @click="changePage(index,event)" href="#" >
+                                                {{item.text}}
+                                             </a>
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </section>
+            <!-- Page Footer-->
+            <footer class="main-footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p></p>
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <p></p>
+                            <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+<!-- JavaScript files-->
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/vendor/popper.js/umd/popper.min.js"> </script>
+<script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/vendor/jquery.cookie/jquery.cookie.js"> </script>
+<script src="/static/vendor/chart.js/Chart.min.js"></script>
+<script src="/static/vendor/jquery-validation/jquery.validate.min.js"></script>
+<!-- Main File-->
+<script src="/static/js/front.js"></script>
+<script src="/static/js/vue.js"></script>
+<script src="/static/js/axios.js"></script>
+<script>
+    function getQueryString(name){
+        let reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        let r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return "";
+    }
+
+    const vm = new Vue({
+        el:"#app",
+        data:{
+            pageNumber:0,
+            keyword:"",
+            userList:[],
+            pageList:[],
+            sort:{
+                text:"请选择排序类型",
+                id:0
+            },
+            sortList:[
+                {
+                    text:"加入时间",
+                    id:0
+                },
+                {
+                    text:"收益",
+                    id:1
+                },
+                {
+                    text:"不可移动金额",
+                    id:2
+                },
+                {
+                    text:"销售量",
+                    id:3
+                },
+                {
+                    text:"观看量",
+                    id:4
+                },
+            ]
+        },
+        mounted(){
+            this.keyword = getQueryString("teacherId");
+            httpGet({
+                url:'/admin/getTeacherList?keyword='+this.keyword,
+                success(res){
+                    vm.userList = res.content.teacherList;
+                    vm.pageList = res.content.page;
+                }
+            })
+        },
+        methods:{
+            logout(e){
+                e.preventDefault();
+                httpGet({
+                    url:"/admin/AdminLogout",
+                    success(){
+                        location.href = "/static/html/admin/login.html"
+                    }
+                })
+            },
+            search(){
+                if(vm.keyword === ""){
+                    return;
+                }
+                httpGet({
+                    url:'/admin/getTeacherList?keyword='+vm.keyword,
+                    success(res){
+                        vm.userList = res.content.teacherList;
+                        vm.pageList = res.content.page;
+                    },
+                    fail(){
+                        vm.userList = [];
+                        vm.pageList = [];
+                    }
+                })
+            },
+            userBan(userId,isBan,e,index){
+                e.preventDefault();
+                httpPost({
+                    url:"/admin/teacherBan",
+                    data:{
+                        teacherId:userId,
+                        isBan:isBan
+                    },
+                    success(res){
+                        vm.userList[index].isBan = isBan;
+                    }
+                })
+            },
+            changePage(index,e){
+                e.preventDefault();
+                // console.log("/admin/adminGetUserList?start="+vm.pageList[index].start)
+                vm.pageNumber = vm.pageList[index].start;
+                httpGet({
+                    url:"/admin/getTeacherList?start="+vm.pageList[index].start + "&sortId="+vm.sort.id,
+                    success(res){
+                        vm.userList = res.content.teacherList;
+                        vm.pageList = res.content.page;
+                    },
+                    fail(){
+                        vm.userList = [];
+                        vm.pageList = [];
+                    }
+                });
+                // alert(index);
+            },
+            selectSort(e,index){
+                e.preventDefault();
+                let sort = vm.sortList[index];
+                vm.sort = sort;
+                httpGet({
+                    url:'/admin/getTeacherList?sortId='+sort.id,
+                    success(res){
+                        vm.userList = res.content.teacherList;
+                        vm.pageList = res.content.page;
+                    },
+                    fail(){
+                        vm.userList = [];
+                        vm.pageList = [];
+                    }
+                })
+
+            }
+        },
+        filters:{
+            date(time){
+                return date(time * 1000)
+            }
+        }
+    })
+</script>
+</body>
+</html>

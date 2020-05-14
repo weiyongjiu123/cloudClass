@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="/static/vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="/static/css/fontastic.css">
+
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="/static/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="/static/css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
+    <script src="/static/js/vue.js"></script>
+    <script src="/static/js/axios.js"></script>
+
+
+</head>
+<body>
+<div class="page login-page" id="cloudApp">
+    <div class="container d-flex align-items-center">
+        <div class="form-holder has-shadow">
+            <div class="row">
+                <!-- Logo & Information Panel-->
+                <div class="col-lg-6">
+                    <div class="info d-flex align-items-center" >
+                        <div class="content">
+                            <div class="logo">
+                                <h1>微云课堂</h1>
+                            </div>
+                            <p>管理员登录</p>
+                            <p>服务于大众, 让知识更加普遍</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Form Panel    -->
+                <div class="col-lg-6 bg-white">
+                    <div class="form d-flex align-items-center">
+                        <div class="content">
+                            <form method="post" class="form-validate" >
+                                <div class="form-group">
+                                    <input id="login-username" v-model="username" type="text" name="loginUsername" required data-msg="Please enter your username" class="input-material">
+                                    <label for="login-username" class="label-material">管理员账号</label>
+                                </div>
+                                <div class="form-group">
+                                    <input id="login-password" v-model="password" type="password" name="loginPassword" required data-msg="Please enter your password" class="input-material">
+                                    <label for="login-password" class="label-material">密码</label>
+                                </div><a  href="#" class="btn btn-primary" @click="login" >登录</a>
+                                <!-- This should be submit button but I replaced it with <a> for demo purposes-->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- JavaScript files-->
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/vendor/popper.js/umd/popper.min.js"> </script>
+<script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/vendor/jquery.cookie/jquery.cookie.js"> </script>
+<script src="/static/vendor/chart.js/Chart.min.js"></script>
+<script src="/static/vendor/jquery-validation/jquery.validate.min.js"></script>
+<!-- Main File-->
+<script src="/static/js/front.js"></script>
+<script>
+    const vm = new Vue({
+        el:"#cloudApp",
+        data:{
+            username:'',
+            password:''
+        },
+        methods:{
+            login:function () {
+                if(!vm.username || !vm.password){
+                    showError("请填写完整信息");
+                    return;
+                }
+                httpPost({
+                    url:"/admin/adminLogin",
+                    data:{
+                        username:vm.username,
+                        password:vm.password
+                    },
+                    success(res){
+                        location.href = "/static/html/admin/index.html";
+                    },
+                    fail(res){
+                        console.log(res)
+                        showError("账号或密码错误");
+                    }
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

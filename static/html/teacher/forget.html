@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="/static/vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="/static/css/fontastic.css">
+
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="/static/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="/static/css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
+    <style>
+        .hidden{
+            display: none;
+        }
+        .could_span{
+            top: 0;
+            left: 0;
+            position: fixed;
+            z-index:100;
+            background-color: rgba(110,110,110,0.65);
+            width: 100%;
+            height:100%;
+        }
+        .span_body{
+            position: relative;
+            width: 35%;
+            background-color: white;
+            border-radius: 10px;
+            margin: 0 auto;
+            top: 100px;
+        }
+        .notGetCode{
+            background-color: grey;
+        }
+    </style>
+</head>
+<body>
+<div class="page login-page" id="app">
+    <div class="container d-flex align-items-center">
+        <div class="form-holder has-shadow">
+            <div class="row">
+                <!-- Logo & Information Panel-->
+                <div class="col-lg-6">
+                    <div class="info d-flex align-items-center">
+                        <div class="content">
+                            <div class="logo">
+                                <h1>微云课堂</h1>
+                            </div>
+                            <p>讲师重置密码</p>
+                            <p>服务于大众, 让知识更加普遍</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Form Panel    -->
+                <div class="col-lg-6 bg-white">
+                    <div class="form d-flex align-items-center">
+                        <div class="content">
+                            <form class="form-validate">
+                                <div class="form-group">
+                                    <input id="register-email"  v-model.trim="phone" name="registerEmail" required data-msg="请输入手机号" class="input-material" style="width: 220px">
+                                    <label for="register-email" class="label-material">手机号</label>
+                                    <button type="button" :class="{'notGetCode':notGetCode}" name="registerSubmit" class="btn btn-primary " @click="getCode()">{{getCodeText}}</button>
+                                </div>
+                                <div class="form-group">
+                                    <input id="register-code" v-model.trim="code" type="text" name="registerUsername" required data-msg="请输入验证码" class="input-material">
+                                    <label for="register-code" class="label-material">验证码</label>
+                                </div>
+                                <div class="form-group">
+                                    <input id="register-password" v-model.trim="password" type="password" name="registerPassword" required data-msg="请输入密码" class="input-material">
+                                    <label for="register-password" class="label-material">密码        </label>
+                                </div>
+                                <div class="form-group">
+                                    <button  type="button" @click="register()" name="registerSubmit" class="btn btn-primary">重置密码</button>
+                                </div>
+                            </form><small>已经有了一个账号? </small><a href="login.html" class="signup">登录</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="could_span" :class="{'hidden':isSpanHidden}" @click="spanHidden()">
+        <div class="span_body" @click="spanBodyClick(event)">
+
+            <div class="card">
+                <div class="card-header d-flex align-items-center">
+                    <h3 class="h4">处理失败原因</h3>
+                </div>
+                <div class="card-body">
+                    6666
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- JavaScript files-->
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/vendor/popper.js/umd/popper.min.js"> </script>
+<script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/vendor/jquery.cookie/jquery.cookie.js"> </script>
+<script src="/static/vendor/chart.js/Chart.min.js"></script>
+<script src="/static/vendor/jquery-validation/jquery.validate.min.js"></script>
+<!-- Main File-->
+<script src="/static/js/front.js"></script>
+<script src="/static/js/vue.js"></script>
+<script src="/static/js/axios.js"></script>
+<script>
+    const vm = new Vue({
+        el:"#app",
+        data:{
+            agree:false,
+            password:"",
+            code:"",
+            getCodeText:"获取验证码",
+            notGetCode:false,
+            isSpanHidden:true,
+            phone:"",
+        },
+        methods:{
+            spanBodyClick:function (e) {
+                e.stopPropagation();
+            },
+            spanHidden:function(){
+                vm.isSpanHidden = true;
+            },
+            runTime(){
+                let i = 5;
+                vm.notGetCode = true;
+                vm.getCodeText = i + '秒后获取';
+                let time = window.setInterval(function () {
+                    if(i === 0){
+                        vm.getCodeText = "获取验证码";
+                        vm.notGetCode = false;
+                        window.clearInterval(time)
+                    }else{
+                        vm.getCodeText = i + '秒后获取';
+                    }
+                    i--;
+                },1000)
+
+            },
+            getCode(){
+                if(!vm.notGetCode){
+                    if(!(/^1[3456789]\d{9}$/.test(vm.phone))){
+                        showError("手机号格式错误");
+                        return ;
+                    }
+                    vm.getCodeText = "正在发送验证码";
+                    vm.notGetCode = true;
+                    httpPost({
+                        url:"/teacher/teacherGetCodeResetPwd",
+                        data:{
+                            phone:vm.phone,
+                        },
+                        success(res){
+                            vm.runTime()
+                        },
+                        fail(){
+                            showError("获取验证码失败");
+                        },
+                        complete(res){
+                            if(res.code === -1){
+                                vm.getCodeText = "获取验证码";
+                                vm.notGetCode = false;
+                            }
+                        }
+                    });
+
+                }
+            },
+            register(){
+                if(!vm.code ||!vm.password){
+                    return;
+                }
+                httpPost({
+                    url:"/teacher/teacherResetPwd",
+                    data:{
+                        password:vm.password,
+                        code:vm.code
+                    },
+                    success(res) {
+                        location.href = "/static/html/teacher/index.html"
+                    },
+                    fail(res) {
+                        console.log(res);
+                        showError("重置密码失败")
+                    }
+                })
+            }
+        }
+    })
+</script>
+</body>
+</html>

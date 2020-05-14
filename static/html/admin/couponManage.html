@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="/static/vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="/static/css/fontastic.css">
+
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="/static/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="/static/css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
+
+    <style>
+        .user-img{
+            width: 40px;
+            height: 40px;
+        }
+        .user-page{
+            padding: 4px 10px;
+            background-color: rgb(220,220,220);
+            border-radius: 5px;
+            border: 1px solid rgb(200,200,200);
+            margin-right: 7px;
+        }
+        .page-now{
+            background-color: white;
+        }
+        .hidden{
+            display: none;
+        }
+        .could_span{
+            top: 0;
+            left: 0;
+            position: fixed;
+            z-index:100;
+            background-color: rgba(110,110,110,0.65);
+            width: 100%;
+            height:100%;
+        }
+        .span_body{
+            position: relative;
+            width: 35%;
+            background-color: white;
+            border-radius: 10px;
+            margin: 0 auto;
+            top: 100px;
+        }
+    </style>
+</head>
+<body>
+<div class="page" id="app">
+    <!-- Main Navbar-->
+    <header class="header">
+        <nav class="navbar">
+            <!-- Search Box-->
+            <div class="search-box">
+                <button class="dismiss"><i class="icon-close"></i></button>
+                <form id="searchForm" action="#" role="search">
+                    <input type="search" placeholder="What are you looking for..." class="form-control">
+                </form>
+            </div>
+            <div class="container-fluid">
+                <div class="navbar-holder d-flex align-items-center justify-content-between">
+                    <!-- Navbar Header-->
+                    <div class="navbar-header">
+                        <!-- Navbar Brand --><a href="index.html" class="navbar-brand d-none d-sm-inline-block">
+                            <div class="brand-text d-none d-lg-inline-block"><strong>微云</strong><span>讲师后台 </span></div>
+                            <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>BD</strong></div></a>
+                        <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
+                    </div>
+                    <!-- Navbar Menu -->
+                    <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                        <!-- Search-->
+                        <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i class="icon-search"></i></a></li>
+                        <!-- Notifications-->
+                        <!-- Logout    -->
+                        <li class="nav-item"><a href="#" @click="logout(event)" class="nav-link logout"> <span class="d-none d-sm-inline">退出</span><i class="fa fa-sign-out"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="page-content d-flex align-items-stretch">
+        <!-- Side Navbar -->
+        <nav class="side-navbar">
+            <!-- Sidebar Header-->
+            <div class="sidebar-header d-flex align-items-center">
+                <div class="avatar"><img src="/static/img/teacher/default.jpg" alt="..." class="img-fluid rounded-circle"></div>
+                <div class="title">
+                    <h1 class="h4">管理员</h1>
+                    <p>超级管理员</p>
+                </div>
+            </div>
+            <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
+            <ul class="list-unstyled">
+                <li><a href="index.html"> <i class="icon-home"></i>主页 </a></li>
+                <li><a href="userManage.html"> <i class="fa fa-bar-chart"></i>用户管理 </a></li>
+                <li><a href="teacherManage.html"> <i class="fa fa-bar-chart"></i>讲师管理 </a></li>
+                <li><a href="classManage.html"> <i class="icon-grid"></i>课程管理 </a></li>
+                <li><a href="typeManage.html"> <i class="fa fa-bar-chart"></i>课程类型 </a></li>
+                <li><a href="orderManage.html"> <i class="fa fa-bar-chart"></i>订单管理 </a></li>
+                <li class="active"><a href="couponManage.html"> <i class="icon-grid"></i>优惠卷管理 </a></li>
+                <li><a href="withdrawalManage.html"> <i class="fa fa-bar-chart"></i>提现申请 </a></li>
+                <li><a href="adManage.html"> <i class="icon-grid"></i>广告管理 </a></li>
+                <li><a href="complaintsManage.html"> <i class="icon-grid"></i>投诉管理 </a></li>
+                <li><a href="classCommManage.html"> <i class="icon-grid"></i>留言举报 </a></li>
+                <li><a href="questionManage.html"> <i class="icon-grid"></i>常见问题 </a></li>
+                <li><a href="settting.html"> <i class="icon-grid"></i>通用设置 </a></li>
+                <li><a href="teacherNotify.html"> <i class="icon-grid"></i>讲师通知 </a></li>
+            </ul>
+
+        </nav>
+        <div class="content-inner">
+            <!-- Page Header-->
+            <header class="page-header">
+                <div class="container-fluid">
+                    <h2 class="no-margin-bottom">优惠卷管理</h2>
+                </div>
+            </header>
+            <!-- Breadcrumb-->
+            <div class="breadcrumb-holder container-fluid">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">主页</a></li>
+                    <li class="breadcrumb-item active">优惠卷管理</li>
+                </ul>
+            </div>
+            <section class="tables">
+                <div class="container-fluid">
+                    <div class="row">
+
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="input-group" style="margin-bottom: 10px">
+                                        <div class="input-group-prepend">
+                                            <button  type="button" class="btn btn-outline-secondary ">只显示 <span class="caret"></span></button>
+                                        </div>
+                                        <div class="input-group-prepend">
+                                            <button data-toggle="dropdown" type="button"  class="btn btn-outline-secondary dropdown-toggle">{{sort.text}} <span class="caret"></span></button>
+                                            <div class="dropdown-menu">
+                                                <a href="#" class="dropdown-item" v-for="(item,index) in sortList" @click="selectSort(event,index)">{{item.text}}</a>
+                                            </div>
+                                        </div>
+                                        <input style="margin-left: 10px" type="button" value="添加优惠卷" class="btn btn-primary" @click="addCoupon()">
+                                    </div>
+                                    <div class="table-responsive" >
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>序号</th>
+                                                <th>优惠卷名字</th>
+                                                <th>有效开始时间</th>
+                                                <th>有效结束时间</th>
+                                                <th>金额</th>
+                                                <th>状态</th>
+                                                <th>被领取数量</th>
+                                                <th>创建时间</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="(item,index) in couponList">
+                                                <th scope="row">{{index+1+number}}</th>
+                                                <td>{{item.name}}</td>
+                                                <td>{{item.startTime | dateTime}}</td>
+                                                <td>{{item.endTime | dateTime}}</td>
+                                                <td>{{item.amount}}</td>
+                                                <td>
+                                                    <span v-if="item.isShelves === 1">
+                                                     已上架
+                                                        <a href="#" @click="doClick(item.id,0,event,index)">下架</a>
+                                                    </span>
+                                                    <span v-else>
+                                                        未上架
+                                                        <a href="#" @click="doClick(item.id,1,event,index)">上架</a>
+                                                    </span>
+                                                </td>
+                                                <td>{{item.count}}</td>
+                                                <td>{{item.createTime | date}}</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div style="text-align: center">
+                                        <span v-for="(item,index) in pageList">
+                                            <span class="user-page page-now" v-if="item.now">{{item.text}}</span>
+                                             <a v-else class="user-page" @click="changePage(index,event)" href="#" >
+                                                {{item.text}}
+                                             </a>
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </section>
+            <!-- Page Footer-->
+
+        </div>
+    </div>
+    <div class="could_span" :class="{'hidden':isSpanHidden}" @click="spanHidden()">
+        <div class="span_body" @click="spanBodyClick(event)">
+
+            <div class="card">
+                <div class="card-header d-flex align-items-center">
+                    <h3 class="h4">新增优惠卷</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        <label class="form-control-label" >优惠课程名称</label>
+                        <input type="text" placeholder="优惠课程名称" v-model.trim="add.name" class="form-control" style="width: 300px" >
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" >金额</label>
+                        <input type="number" placeholder="优惠课程名称" v-model.trim="add.amount" class="form-control" style="width: 300px" >
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label" >有效时间</label>
+                        <input type="text" placeholder="开始时间"  id="startTime" class="form-control" style="width: 300px;margin-bottom: 10px;" >
+                        <input type="text" placeholder="结束时间"  id="endTime" class="form-control" style="width: 300px" >
+                    </div>
+                    <div class="form-group">
+                        <label class="form-control-label">状态</label>
+                        <div>
+                            <input type="radio" id="radio1" class="cloud_check" v-model.number="add.isShelves" value="1"><label class="cloud_label" for="radio1">上架</label>
+                            <input type="radio" id="radio2" class="cloud_check" v-model.number="add.isShelves" value="0"><label class="cloud_label" for="radio2">下架</label>
+                        </div>
+                    </div>
+                    <div class="form-group" >
+                        <input type="button" value="添加" class="btn btn-primary" @click="couponSubmit">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- JavaScript files-->
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/vendor/popper.js/umd/popper.min.js"> </script>
+<script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/vendor/jquery.cookie/jquery.cookie.js"> </script>
+<script src="/static/vendor/chart.js/Chart.min.js"></script>
+<script src="/static/vendor/jquery-validation/jquery.validate.min.js"></script>
+<!-- Main File-->
+<script src="/static/js/front.js"></script>
+<script src="/static/js/vue.js"></script>
+<script src="/static/js/axios.js"></script>
+<script src="../../laydate/laydate.js"></script>
+<script>
+    //执行一个laydate实例
+    function timestamp(date) {
+        date += ' 00:00:00';
+        console.log(date);
+        return new Date(date).getTime();
+    }
+
+    const vm = new Vue({
+        el:"#app",
+        data:{
+            number:0,
+            add:{
+                startTime:"",
+                endTime:"",
+                isShelves:1,
+                name:"",
+                amount:0,
+            },
+            isSpanHidden:true,
+            couponList:[],
+            pageList:[],
+            sort:{
+                text:"已上架",
+                id:0
+            },
+            sortList:[
+                {
+                    text:"已上架",
+                    id:0
+                },
+                {
+                    text:"未上架",
+                    id:1
+                },
+                {
+                    text:"全部",
+                    id:2
+                },
+            ]
+        },
+        mounted(){
+            laydate.render({
+                elem: '#startTime' //指定元素
+            });
+            laydate.render({
+                elem: '#endTime' //指定元素
+            });
+            this.add.startTime = document.getElementById("startTime");
+            this.add.endTime = document.getElementById("endTime");
+            httpGet({
+                url:'/admin/adminGetCouponList',
+                success(res){
+                    vm.couponList = res.content.couponList;
+                    vm.pageList = res.content.page;
+                }
+            })
+        },
+        methods:{
+            logout(e){
+                e.preventDefault();
+                httpGet({
+                    url:"/admin/AdminLogout",
+                    success(){
+                        location.href = "/static/html/admin/login.html"
+                    }
+                })
+            },
+            spanBodyClick:function (e) {
+                e.stopPropagation();
+            },
+            spanHidden:function(){
+                vm.isSpanHidden = true;
+            },
+            addCoupon(){
+                vm.isSpanHidden = false;
+            },
+            doClick(id,isShelves,e,index){
+                e.preventDefault();
+                httpPost({
+                    url:"/admin/adminDoIsShelves",
+                    data:{
+                        id:id,
+                        isShelves:isShelves
+                    },
+                    success(){
+                        vm.couponList[index].isShelves = isShelves;
+                    },
+                    fail(res) {
+                        showError("操作失败")
+                    }
+                })
+            },
+            doFail(){
+                vm.isDoHandle(vm.failDo.id,vm.failDo.isDo,vm.failDo.index,vm.failDo.failReason)
+            },
+            isDoHandle(id,isDo,index,failReason){
+
+                httpPost({
+                    url:"/admin/withdrawalDo",
+                    data:{
+                        id:id,
+                        isDo:isDo,
+                        failReason:failReason
+                    },
+                    success(res){
+                        vm.withdrawalList[index].isDo = isDo;
+                        vm.isSpanHidden = false;
+                    }
+                })
+            },
+            changePage(index,e){
+                e.preventDefault();
+                // console.log("/admin/adminGetUserList?start="+vm.pageList[index].start)
+                vm.number = vm.pageList[index].start;
+                httpGet({
+                    url:"/admin/adminGetCouponList?start="+vm.pageList[index].start + "&isDo="+vm.sort.id,
+                    success(res){
+                        vm.couponList = res.content.couponList;
+                        vm.pageList = res.content.page;
+                    }
+                });
+                // alert(index);
+            },
+            selectSort(e,index){
+                e.preventDefault();
+                let sort = vm.sortList[index];
+                // console.log(index,sort);
+                vm.sort = sort;
+                httpGet({
+                    url:'/admin/adminGetCouponList?isDo='+sort.id,
+                    success(res){
+                        vm.couponList = res.content.couponList;
+                        vm.pageList = res.content.page;
+                    },
+                    fail(res){
+                        vm.couponList = [];
+                        vm.pageList = [];
+                    }
+                })
+
+            },
+            couponSubmit(){
+                if (!vm.add.startTime.value || !vm.add.endTime.value || !vm.add.name || !vm.add.amount) {
+                    showError("请填写完整信息");
+                    return;
+                }
+               let startTime = timestamp(vm.add.startTime.value) /1000;
+               let endTime = timestamp(vm.add.endTime.value) /1000;
+               if(startTime > endTime){
+                   showError("截至时间不能大于开始时间");
+                   return;
+               }
+                httpPost({
+                    url:"/admin/adminAddCoupon",
+                    data:{
+                        startTime:startTime,
+                        endTime:endTime,
+                        name:vm.add.name,
+                        amount:parseInt(vm.add.amount),
+                        isShelves:vm.add.isShelves,
+                    },
+                    success(){
+                        location.reload();
+                    },
+                    fail(res){
+                        console.log(res);
+                        showError("添加失败")
+                    }
+                });
+            }
+        },
+        filters:{
+            date(time){
+                return date(time * 1000)
+            },
+            dateTime(time){
+                return dateTime((time * 1000))
+            }
+        }
+    })
+</script>
+</body>
+</html>

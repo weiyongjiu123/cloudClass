@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="/static/vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="/static/css/fontastic.css">
+
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="/static/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="/static/css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
+    <style>
+        .user-img{
+            width: 40px;
+            height: 40px;
+        }
+        .user-page{
+            padding: 4px 10px;
+            background-color: rgb(220,220,220);
+            border-radius: 5px;
+            border: 1px solid rgb(200,200,200);
+            margin-right: 7px;
+        }
+        .page-now{
+            background-color: white;
+        }
+        .hidden{
+            display: none;
+        }
+        .could_span{
+            top: 0;
+            left: 0;
+            position: fixed;
+            z-index:100;
+            background-color: rgba(110,110,110,0.65);
+            width: 100%;
+            height:100%;
+        }
+        .span_body{
+            position: relative;
+            width: 80%;
+            background-color: white;
+            border-radius: 10px;
+            margin: 0 auto;
+            top: 50px;
+        }
+    </style>
+</head>
+<body>
+<div class="page" id="app">
+    <!-- Main Navbar-->
+    <header class="header">
+        <nav class="navbar">
+            <!-- Search Box-->
+            <div class="search-box">
+                <button class="dismiss"><i class="icon-close"></i></button>
+                <form id="searchForm" action="#" role="search">
+                    <input type="search" placeholder="What are you looking for..." class="form-control">
+                </form>
+            </div>
+            <div class="container-fluid">
+                <div class="navbar-holder d-flex align-items-center justify-content-between">
+                    <!-- Navbar Header-->
+                    <div class="navbar-header">
+                        <!-- Navbar Brand --><a href="index.html" class="navbar-brand d-none d-sm-inline-block">
+                            <div class="brand-text d-none d-lg-inline-block"><strong>微云</strong><span>讲师后台 </span></div>
+                            <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>BD</strong></div></a>
+                        <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
+                    </div>
+                    <!-- Navbar Menu -->
+                    <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                        <!-- Search-->
+                        <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i class="icon-search"></i></a></li>
+                        <!-- Notifications-->
+                        <!-- Logout    -->
+                        <li class="nav-item"><a href="#" @click="logout(event)" class="nav-link logout"> <span class="d-none d-sm-inline">退出</span><i class="fa fa-sign-out"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="page-content d-flex align-items-stretch">
+        <!-- Side Navbar -->
+        <nav class="side-navbar">
+            <!-- Sidebar Header-->
+            <div class="sidebar-header d-flex align-items-center">
+                <div class="avatar"><img src="/static/img/teacher/default.jpg" alt="..." class="img-fluid rounded-circle"></div>
+                <div class="title">
+                    <h1 class="h4">管理员</h1>
+                    <p>超级管理员</p>
+                </div>
+            </div>
+            <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
+            <ul class="list-unstyled">
+                <li class="active"><a href="index.html"> <i class="icon-home"></i>主页 </a></li>
+                <li><a href="type.html"> <i class="fa fa-bar-chart"></i>类型管理</a></li>
+            </ul>
+
+        </nav>
+        <div class="content-inner">
+            <!-- Page Header-->
+            <!-- Breadcrumb-->
+            <section class="tables">
+                <div class="container-fluid">
+                    <div class="row">
+
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="input-group" style="margin-bottom: 10px">
+                                        <div class="input-group-prepend">
+                                            <button  type="button" class="btn btn-outline-secondary ">类型<span class="caret"></span></button>
+                                        </div>
+                                        <div class="input-group-prepend">
+                                            <button data-toggle="dropdown" type="button"  class="btn btn-outline-secondary dropdown-toggle">{{sort.name}} <span class="caret"></span></button>
+                                            <div class="dropdown-menu">
+                                                <a href="#" class="dropdown-item" v-for="(item,index) in sortList" @click="selectSort(event,index)">{{item.name}}</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-group" style="margin-bottom: 10px">
+                                        <span v-for="item in scopeList" @click="getPatterList(item.id)" style="margin-left: 20px">
+                                            <input type="radio" :value="item.id" name="scope" :id="'scope'+item.id" v-model="scopeId">
+                                            <label :for="'scope'+item.id">{{item.name}}</label>
+                                        </span>
+                                    </div>
+                                    <div class="table-responsive" >
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>序号</th>
+                                                <th>id</th>
+                                                <th>句型</th>
+                                                <th>时间</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="(item,index) in patternList">
+                                                <th scope="row">{{index+1}}</th>
+                                                <td>{{item.id}}</td>
+                                                <td><a href="#" @click="example(event,item.example)">{{item.pattern | sub}}</a> </td>
+                                                <td>{{item.createTime| date}}</td>
+                                                <td>
+                                                    <a href="#" @click="del(event,item.id,index)">删除</a>
+                                                    <a href="#" @click="update(event,index)">更新</a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                        <div>
+                                            <input type="submit" value="新增" class="btn btn-primary"  @click="addPattern()" >
+                                        </div>
+                                    </div>
+                                    <div style="text-align: center">
+                                        <span v-for="(item,index) in pageList">
+                                            <span class="user-page page-now" v-if="item.now">{{item.text}}</span>
+                                             <a v-else class="user-page" @click="changePage(index,event)" href="#" >
+                                                {{item.text}}
+                                             </a>
+                                        </span>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </section>
+            <!-- Page Footer-->
+
+        </div>
+    </div>
+    <div class="could_span" :class="{'hidden':isSpanHidden}" @click="spanHidden()">
+        <div class="span_body" @click="spanBodyClick(event)">
+
+            <div class="card">
+                <div class="card-header d-flex align-items-center">
+                    <h3 class="h4">新增</h3>
+                </div>
+                <div class="card-body">
+                    <div>类型：</div>
+                    <div>
+                         <span v-for="item in sortList" style="margin-left: 20px" @click="setScopeList(item.id)">
+                                            <input type="radio" :value="item.id" name="type" :id="'type_'+item.id" v-model="sort.id">
+                                            <label :for="'type_'+item.id">{{item.name}}</label>
+                        </span>
+                    </div>
+                    <div>范围：</div>
+                    <div>
+                        <span v-for="item in newScopeList" style="margin-left: 20px">
+                                            <input type="radio" :value="item.id" name="scope" :id="'scope_'+item.id" v-model="newPattern.scopeId">
+                                            <label :for="'scope_'+item.id">{{item.name}}</label>
+                        </span>
+                    </div>
+                    <textarea v-model.trim="newPattern.pattern" style="width: 100%;height: 100px" placeholder="请填写句型">
+
+                    </textarea>
+                    <textarea v-model.trim="newPattern.example" style="width: 100%;height: 100px" placeholder="请填写例子">
+
+                    </textarea>
+                    <div class="form-group">
+                        <input  v-if="newPattern.createTime" type="button" value="更新" class="btn btn-primary" @click="updateSubmit">
+                        <input v-else="newPattern.createTime" type="button"  value="提交" class="btn btn-primary" @click="addSubmit">
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="could_span" :class="{'hidden':exampleDisplay}" >
+        <div class="span_body">
+
+            <div class="card">
+                <div class="card-header d-flex align-items-center">
+                    <h3 class="h4">例子</h3>
+                </div>
+                <div class="card-body">
+                    <div class="form-group">
+                        {{exampleContent}}
+                    </div>
+                    <div class="form-group">
+                        <input type="button" value="关闭" class="btn btn-primary" @click="closeExample">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- JavaScript files-->
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/vendor/popper.js/umd/popper.min.js"> </script>
+<script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/vendor/jquery.cookie/jquery.cookie.js"> </script>
+<script src="/static/vendor/chart.js/Chart.min.js"></script>
+<script src="/static/vendor/jquery-validation/jquery.validate.min.js"></script>
+<!-- Main File-->
+<script src="/static/js/front.js"></script>
+<script src="/static/js/vue.js"></script>
+<script src="/static/js/axios.js"></script>
+<script>
+    function getQueryString(name){
+        let reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        let r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+    const vm = new Vue({
+        el:"#app",
+        data:{
+            exampleDisplay:true,
+            exampleContent:"",
+            newPattern :{},
+            isSpanHidden:true,
+            patternList:[],
+            pageList:[],
+            sort:{
+                name:"请选择查询内容",
+                id:0
+            },
+            sortList:[],
+            scopeList:[],
+            scopeId:0,
+            newScopeList:[],
+        },
+        mounted(){
+
+            let that = this;
+            httpGet({
+                url:"/user/getVTypeList",
+                success(res){
+                    vm.sortList = res.content;
+                    vm.sort = res.content[0];
+                    that.getScopeList(vm.sort.id)
+                }
+            });
+
+        },
+        methods:{
+            setScopeList(id){
+                httpGet({
+                    url:"/user/vGetScopeList?typeId="+id,
+                    success(res){
+                        vm.newScopeList = res.content;
+                    },
+                })
+            },
+            getPatterList(scopeId){
+                httpGet({
+                    url:'/user/vGetIndex?scopeId='+scopeId,
+                    success(res){
+                        vm.patternList = res.content.patternList;
+                        vm.pageList = res.content.page;
+                    },
+                    fail(){
+                        vm.patternList = [];
+                        vm.pageList = [];
+                    }
+                });
+            },
+            getScopeList(id){
+                httpGet({
+                    url:"/user/vGetScopeList?typeId="+id,
+                    success(res){
+                        vm.scopeList = res.content;
+                        vm.scopeId = vm.scopeList[0].id;
+                        vm.getPatterList(vm.scopeId)
+                    },
+                })
+            },
+            addPattern(){
+                vm.isSpanHidden = false;
+            },
+            spanBodyClick:function (e) {
+                e.stopPropagation();
+            },
+            spanHidden:function(){
+                vm.isSpanHidden = true;
+                vm.newPattern = {};
+            },
+            example(e,content){
+                e.preventDefault();
+                vm.exampleDisplay = false;
+                vm.exampleContent = content;
+            },
+            del(e,id,index){
+                e.preventDefault();
+                httpPost({
+                    url:"/user/vDelPattern",
+                    data:{
+                        id:id
+                    },
+                    success(){
+                        vm.patternList.splice(index,1)
+                    }
+                })
+            },
+            update(e,index){
+                e.preventDefault();
+                let pattern = vm.patternList[index];
+                vm.newPattern = pattern;
+                vm.newPattern.index = index;
+                vm.newScopeList = Object.create(vm.scopeList);
+                vm.isSpanHidden = false;
+            },
+            updateSubmit(){
+                let pattern = vm.newPattern;
+                if(!pattern.example || !pattern.pattern || !pattern.scopeId && !pattern.id){
+                    showError("请填写完整信息");
+                    return;
+                }
+                httpPost({
+                    url:"/user/vUpdatePattern",
+                    data:pattern,
+                    success(){
+                        vm.newScopeList[pattern.index] = pattern;
+                        pattern = {};
+                        vm.isSpanHidden = true;
+                    },
+                    fail(){
+                        showError("修改失败")
+                    }
+                })
+            },
+            closeExample(){
+              vm.exampleDisplay = true;
+            },
+            addSubmit(){
+                let pattern = vm.newPattern;
+                if(!pattern.example || !pattern.pattern || !pattern.scopeId){
+                    showError("请填写完整信息");
+                    return;
+                }
+                httpPost({
+                    url:"/user/vAddPattern",
+                    data:pattern,
+                    success(res){
+                        location.reload();
+                    },
+                    fail(res){
+                        showError("添加失败")
+                    }
+                })
+            },
+            doFail(){
+                vm.isDoHandle(vm.failDo.id,vm.failDo.isDo,vm.failDo.index,vm.failDo.failReason)
+            },
+            isDoHandle(id,isDo,index,failReason){
+
+                httpPost({
+                    url:"/admin/withdrawalDo",
+                    data:{
+                        id:id,
+                        isDo:isDo,
+                        failReason:failReason
+                    },
+                    success(res){
+                        vm.withdrawalList[index].isDo = isDo;
+                        vm.isSpanHidden = true;
+                    }
+                })
+            },
+            changePage(index,e){
+                e.preventDefault();
+                //  url:'/user/vGetIndex?scopeId='+scopeId,
+                httpGet({
+                    url:"/user/vGetIndex?start="+vm.pageList[index].start + "&scopeId="+vm.scopeId,
+                    success(res){
+                        vm.patternList = res.content.patternList;
+                        vm.pageList = res.content.page;
+                    },
+                    fail(res){
+
+                    }
+                });
+                // alert(index);
+            },
+            selectSort(e,index){
+                e.preventDefault();
+                let sort = vm.sortList[index];
+                // console.log(index,sort);
+                vm.sort = sort;
+                vm.getScopeList(sort.id)
+
+            }
+        },
+        filters:{
+            date(time){
+                return date(time * 1000)
+            },
+            sub(str){
+                if(str.length > 30){
+                    return str.substr(0,30) + '...'
+                }else{
+                    return str;
+                }
+            }
+        }
+    })
+</script>
+</body>
+</html>

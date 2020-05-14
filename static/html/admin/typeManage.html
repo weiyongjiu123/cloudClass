@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="/static/vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="/static/css/fontastic.css">
+
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="/static/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="/static/css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
+    <style>
+        .user-img{
+            width: 40px;
+            height: 40px;
+        }
+        .user-page{
+            padding: 4px 10px;
+            background-color: rgb(220,220,220);
+            border-radius: 5px;
+            border: 1px solid rgb(200,200,200);
+            margin-right: 7px;
+        }
+        .page-now{
+            background-color: white;
+        }
+        .hidden{
+            display: none;
+        }
+        .could_span{
+            top: 0;
+            left: 0;
+            position: fixed;
+            z-index:100;
+            background-color: rgba(110,110,110,0.65);
+            width: 100%;
+            height:100%;
+        }
+        .span_body{
+            position: relative;
+            width: 35%;
+            background-color: white;
+            border-radius: 10px;
+            margin: 0 auto;
+            top: 100px;
+        }
+    </style>
+</head>
+<body>
+<div class="page" id="app">
+    <!-- Main Navbar-->
+    <header class="header">
+        <nav class="navbar">
+            <!-- Search Box-->
+            <div class="search-box">
+                <button class="dismiss"><i class="icon-close"></i></button>
+                <form id="searchForm" action="#" role="search">
+                    <input type="search" placeholder="What are you looking for..." class="form-control">
+                </form>
+            </div>
+            <div class="container-fluid">
+                <div class="navbar-holder d-flex align-items-center justify-content-between">
+                    <!-- Navbar Header-->
+                    <div class="navbar-header">
+                        <!-- Navbar Brand --><a href="index.html" class="navbar-brand d-none d-sm-inline-block">
+                            <div class="brand-text d-none d-lg-inline-block"><strong>微云</strong><span>讲师后台 </span></div>
+                            <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>BD</strong></div></a>
+                        <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
+                    </div>
+                    <!-- Navbar Menu -->
+                    <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                        <!-- Search-->
+                        <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i class="icon-search"></i></a></li>
+                        <!-- Notifications-->
+                        <!-- Logout    -->
+                        <li class="nav-item"><a href="#" @click="logout(event)" class="nav-link logout"> <span class="d-none d-sm-inline">退出</span><i class="fa fa-sign-out"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="page-content d-flex align-items-stretch">
+        <!-- Side Navbar -->
+        <nav class="side-navbar">
+            <!-- Sidebar Header-->
+            <div class="sidebar-header d-flex align-items-center">
+                <div class="avatar"><img src="/static/img/teacher/default.jpg" alt="..." class="img-fluid rounded-circle"></div>
+                <div class="title">
+                    <h1 class="h4">管理员</h1>
+                    <p>超级管理员</p>
+                </div>
+            </div>
+            <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
+            <ul class="list-unstyled">
+                <li><a href="index.html"> <i class="icon-home"></i>主页 </a></li>
+                <li><a href="userManage.html"> <i class="fa fa-bar-chart"></i>用户管理 </a></li>
+                <li><a href="teacherManage.html"> <i class="fa fa-bar-chart"></i>讲师管理 </a></li>
+                <li><a href="classManage.html"> <i class="icon-grid"></i>课程管理 </a></li>
+                <li class="active"><a href="typeManage.html"> <i class="fa fa-bar-chart"></i>课程类型 </a></li>
+                <li><a href="orderManage.html"> <i class="fa fa-bar-chart"></i>订单管理 </a></li>
+                <li><a href="couponManage.html"> <i class="icon-grid"></i>优惠卷管理 </a></li>
+                <li><a href="withdrawalManage.html"> <i class="fa fa-bar-chart"></i>提现申请 </a></li>
+                <li><a href="adManage.html"> <i class="icon-grid"></i>广告管理 </a></li>
+                <li><a href="complaintsManage.html"> <i class="icon-grid"></i>投诉管理 </a></li>
+                <li><a href="classCommManage.html"> <i class="icon-grid"></i>留言举报 </a></li>
+                <li><a href="questionManage.html"> <i class="icon-grid"></i>常见问题 </a></li>
+                <li><a href="settting.html"> <i class="icon-grid"></i>通用设置 </a></li>
+                <li><a href="teacherNotify.html"> <i class="icon-grid"></i>讲师通知 </a></li>
+            </ul>
+
+        </nav>
+        <div class="content-inner">
+            <!-- Page Header-->
+            <header class="page-header">
+                <div class="container-fluid">
+                    <h2 class="no-margin-bottom">类型管理</h2>
+                </div>
+            </header>
+            <!-- Breadcrumb-->
+            <div class="breadcrumb-holder container-fluid">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">主页</a></li>
+                    <li class="breadcrumb-item active">类型管理</li>
+                </ul>
+            </div>
+            <section class="tables">
+                <div class="container-fluid">
+                    <div class="row">
+
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="table-responsive" >
+                                        <table class="table table-striped">
+                                            <thead>
+                                            <tr>
+                                                <th>序号</th>
+                                                <th>类型名</th>
+                                                <th>创建时间</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr v-for="(item,index) in typeList">
+                                                <th scope="row">{{index+1}}</th>
+                                                <td v-if="!item.nameModify">{{item.name}}<a href="#" style="margin-left: 10px" @click="modify(event,index)">修改</a></td>
+                                                <td v-else><input v-model="item.name" type="text"><a href="#" style="margin-left: 10px" @click="modifySubmit(event,index)">确定</a></td>
+                                                <td>{{item.createTime| date}}</td>
+                                                <td><a href="#" @click="delType(event,item.id)">删除</a></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <input type="text"  class="form-control" value="新增一个课程类型" disabled style="width: 170px;float: left">
+                                        <input type="text" v-model.trim="newTypeName"  placeholder="请输入类型名" class="form-control" style="width: 300px;float: left">
+                                        <input type="submit" value="添加" class="btn btn-primary" style="margin-left: 40px" @click="addType()" >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </section>
+            <!-- Page Footer-->
+
+        </div>
+    </div>
+
+</div>
+<!-- JavaScript files-->
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/vendor/popper.js/umd/popper.min.js"> </script>
+<script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/vendor/jquery.cookie/jquery.cookie.js"> </script>
+<script src="/static/vendor/chart.js/Chart.min.js"></script>
+<script src="/static/vendor/jquery-validation/jquery.validate.min.js"></script>
+<!-- Main File-->
+<script src="/static/js/front.js"></script>
+<script src="/static/js/vue.js"></script>
+<script src="/static/js/axios.js"></script>
+<script>
+    const vm = new Vue({
+        el:"#app",
+        data:{
+            newTypeName :"",
+            isSpanHidden:true,
+            typeList:[],
+
+        },
+        mounted(){
+            httpGet({
+                url:'/admin/adminGetTypeList',
+                success(res){
+                    res.content.forEach(function (value) {
+                        value.nameModify = false;
+                        value.tmpName = value.name
+                    });
+                    vm.typeList = res.content;
+                }
+            })
+        },
+        methods:{
+            logout(e){
+                e.preventDefault();
+                httpGet({
+                    url:"/admin/AdminLogout",
+                    success(){
+                        location.href = "/static/html/admin/login.html"
+                    }
+                })
+            },
+            spanBodyClick:function (e) {
+                e.stopPropagation();
+            },
+            spanHidden:function(){
+                vm.isSpanHidden = true;
+                vm.failDo = {};
+            },
+            modify(e,index){
+                e.preventDefault();
+                vm.typeList[index].nameModify = true;
+                // vm.typeList[index] = type;
+            },
+            modifySubmit(e,index){
+                e.preventDefault();
+                if(vm.typeList[index].name === ""){
+                    showError("类型名不能为空");
+                    return;
+                }
+                if(vm.typeList[index].name === vm.typeList[index].tmpName){
+                    vm.typeList[index].nameModify = false;
+                    return;
+                }
+
+                httpPost({
+                    url:"/admin/modifyTypeName",
+                    data:{
+                        id:vm.typeList[index].id,
+                        name:vm.typeList[index].name
+                    },
+                    success(res){
+                        vm.typeList[index].nameModify = false;
+                        vm.typeList[index].tmpName = vm.typeList[index].name ;
+                    },
+                    fail(res) {
+                        showError("修改失败")
+                    }
+                })
+            },
+            addType(){
+                if(vm.newTypeName === "")
+                {
+                    showError("请输入类型名");
+                    return;
+                }
+                httpPost({
+                    url:"/admin/addType",
+                    data:{
+                        name:vm.newTypeName
+                    },
+                    success(res){
+                        location.reload();
+                    },
+                    fail(res){
+                        showError("添加失败")
+                    }
+                })
+            },
+            delType(e,id){
+                e.preventDefault();
+                httpPost({
+                    url:"/admin/delType",
+                    data:{
+                        id:id
+                    },
+                    success(res) {
+                        location.reload()
+                    },
+                    fail(res){
+                        console.log(res)
+                        showError("删除失败")
+                    }
+                })
+            }
+        },
+        filters:{
+            date(time){
+                return date(time * 1000)
+            }
+        }
+    })
+</script>
+</body>
+</html>

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="/static/vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="/static/css/fontastic.css">
+
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="/static/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="/static/css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
+    <style>
+        .item .teacher_span{
+            color: white;
+            background-color: rgb(13,193,123);
+            padding: 4px;
+            border-radius: 5px;
+            font-size: 5px;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="page" id="app">
+    <!-- Main Navbar-->
+    <header class="header">
+        <nav class="navbar">
+            <!-- Search Box-->
+            <div class="search-box">
+                <button class="dismiss"><i class="icon-close"></i></button>
+                <form id="searchForm" action="#" role="search">
+                    <input type="search" placeholder="What are you looking for..." class="form-control">
+                </form>
+            </div>
+            <div class="container-fluid">
+                <div class="navbar-holder d-flex align-items-center justify-content-between">
+                    <!-- Navbar Header-->
+                    <div class="navbar-header">
+                        <!-- Navbar Brand --><a href="index.html" class="navbar-brand d-none d-sm-inline-block">
+                            <div class="brand-text d-none d-lg-inline-block"><strong>微云</strong><span>讲师后台 </span></div>
+                            <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>BD</strong></div></a>
+                        <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
+                    </div>
+                    <!-- Navbar Menu -->
+                    <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                        <!-- Search-->
+                        <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i class="icon-search"></i></a></li>
+                        <!-- Notifications-->
+
+                        <!-- Messages                        -->
+
+                        <!-- Languages dropdown    -->
+
+                        <!-- Logout    -->
+                        <li class="nav-item"><a href="#" @click="logout(event)" class="nav-link logout"> <span class="d-none d-sm-inline" >退出</span><i class="fa fa-sign-out"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="page-content d-flex align-items-stretch">
+        <!-- Side Navbar -->
+        <nav class="side-navbar">
+            <!-- Sidebar Header-->
+            <div class="sidebar-header d-flex align-items-center" style="cursor: pointer;" onclick="location.href='person.html'">
+                <div class="avatar"><img :src="teacher['img']" alt="..." class="img-fluid rounded-circle"></div>
+                <div class="title">
+                    <h1 class="h4">{{teacher["name"]}}</h1>
+                    <p>{{teacher["phone"]}}</p>
+                </div>
+            </div>
+            <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
+            <ul class="list-unstyled">
+                <li><a href="index.html"> <i class="icon-home"></i>主页</a></li>
+                <li><a href="classManager.html"> <i class="icon-grid"></i>课程管理 </a></li>
+                <li><a href="orderManager.html"> <i class="fa fa-bar-chart"></i>订单管理 </a></li>
+                <li  class="active"><a href="notify.html"> <i class="icon-mail"></i>消息通知</a></li>
+                <li><a href="bill.html"> <i class="icon-padnote"></i>账单列表</a></li>
+            </ul>
+
+        </nav>
+        <div class="content-inner">
+            <!-- Page Header-->
+            <header class="page-header">
+                <div class="container-fluid">
+                    <h2 class="no-margin-bottom">消息通知</h2>
+                </div>
+            </header>
+            <!-- Breadcrumb-->
+            <div class="breadcrumb-holder container-fluid">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">主页</a></li>
+                    <li class="breadcrumb-item active">消息通知</li>
+                </ul>
+            </div>
+            <section class="tables">
+                <div class="container-fluid">
+                    <div class="row">
+
+                        <div class="col-lg-12" >
+
+                            <div class="daily-feeds card" v-for="(item,key) in notifyList">
+
+                                <div class="card-body no-padding" >
+                                    <!-- Item 未读信息列表-->
+
+                                    <div class="item clearfix" >
+                                        <div class="feed d-flex justify-content-between">
+                                            <div class="feed-body d-flex justify-content-between"><a href="#" class="feed-profile"><img :src="item.postImg" alt="person" class="img-fluid rounded-circle"></a>
+                                                <div class="content">
+                                                    <h5>{{item.postUsername}}<span class="teacher_span" v-if="item.postUserType === 2">讲师</span>}<span class="teacher_span" v-else-if="item.postUserType === 3">管理员</span></h5><span>{{item.notifyMsg}}</span>
+                                                    <div class="full-date"><small>{{item.postCreateTime}}</small></div>
+                                                </div>
+                                            </div>
+                                            <div class="date text-right" style="font-size: 17px;"><a v-if="item.notifyType === 1" :href="'/static/html/teacher/aQuetion.html?commId='+item.commId">来源</a> </div>
+                                        </div>
+                                        <div style="margin-left: 60px;margin-top: 10px;margin-bottom: 10px">{{item.postContent}}</div>
+                                        <div class="src_body">
+                                            <div class="src_content quote has-shadow" style="background-color: rgb(245,245,245);">
+                                                {{item.replyMsg}}:&nbsp;&nbsp;{{item.srcContent}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </section>
+            <!-- Page Footer-->
+            <footer class="main-footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <p></p>
+                        </div>
+                        <div class="col-sm-6 text-right">
+                            <p></p>
+                            <!-- Please do not remove the backlink to us unless you support further theme's development at https://bootstrapious.com/donate. It is part of the license conditions. Thank you for understanding :)-->
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+<!-- JavaScript files-->
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/vendor/popper.js/umd/popper.min.js"> </script>
+<script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/vendor/jquery.cookie/jquery.cookie.js"> </script>
+<script src="/static/vendor/chart.js/Chart.min.js"></script>
+<script src="/static/vendor/jquery-validation/jquery.validate.min.js"></script>
+<!-- Main File-->
+<script src="/static/js/front.js"></script>
+<script src="/static/js/vue.js"></script>
+<script src="/static/js/axios.js"></script>
+<script>
+    const vm = new Vue({
+        el:"#app",
+        data:{
+            teacher:{
+                img:"",
+                name:"",
+                phone:""
+            },
+            notifyList:[],
+        },
+        mounted(){
+            httpGet({
+                url:"/teacher/getNotifyList",
+                success(res){
+                    let list =  res.content;
+                    console.log(list);
+                    for(let value of list){
+                        value.postCreateTime = dateTime(value.postCreateTime * 1000);
+                        if(value.notifyType === 1){
+                            value.notifyMsg = "回复你一条消息";
+                            value.replyMsg = "你的评论：";
+                        }else{
+                            value.notifyMsg = "删除了一条信息";
+                            if(value.postUserId == 0){
+                                value.replyMsg = "你的评论";
+                            }else{
+                                value.replyMsg = "对方的评论";
+                            }
+
+                        }
+                    }
+
+                    vm.notifyList = res.content;
+
+                },
+                complete(res){
+                    vm.teacher = res.teacher;
+                }
+            })
+        },
+        methods:{
+            logout(e){
+                e.preventDefault();
+                httpGet({
+                    url:"/teacher/teacherLogout",
+                    success(res){
+                        location.href = "/static/html/teacher/login.html"
+                    },
+                    fail(){
+                        showError("退出失败")
+                    }
+                })
+            },
+        }
+    })
+</script>
+</body>
+</html>

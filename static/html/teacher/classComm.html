@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="robots" content="all,follow">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="/static/vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="/static/css/fontastic.css">
+
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="/static/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="/static/css/custom.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
+    <style>
+        .item_left img{
+            height: 60px;
+            width: 60px;
+            border-radius: 30px;
+        }
+        .item_left{
+            float: left;
+        }
+
+        .item_right{
+            margin-left: 70px;
+            padding-top: 2px;
+        }
+        .item_right .item_username{
+            color: grey;
+        }
+        .item_right .item_content{
+            margin-top: 10px;
+        }
+        .item_date{
+            margin-top: 5px;
+            color: grey;
+            font-size: 15px;
+        }
+        .item_reply{
+
+        }
+        .reply_list{
+            margin-top: 20px;
+        }
+        .item_reply{
+            cursor: pointer;
+        }
+        .question_item{
+            margin-bottom: 60px;
+        }
+        .daily-feeds span{
+            font-size: 1em
+        }
+        .daily-feeds span{
+            color: black;
+        }
+        .span_body .item_teacher,.question_item .item_teacher{
+            margin-left: 3px;
+            margin-right: 3px;
+            padding: 3px;
+            background-color: rgb(13,193,123);
+            border-radius: 5px;
+            color: white;
+            font-size: 11px;
+        }
+        .item_date .reply_text{
+            cursor: pointer;
+            color: rgb(13,193,123);
+        }
+        .question_item .item_delete{
+            margin-left: 10px;
+            color: rgb(13,193,123);
+            cursor: pointer;
+        }
+
+        /*遮罩样式*/
+        .could_span{
+            top: 0;
+            left: 0;
+            position: fixed;
+            z-index:100;
+            background-color: rgba(110,110,110,0.65);
+            width: 100%;
+            height:100%;
+        }
+        .hidden{
+            display: none;
+        }
+        .span_body{
+            position: relative;
+            width: 35%;
+            background-color: white;
+            border-radius: 10px;
+            margin: 0 auto;
+            top: 100px;
+        }
+        .class_comm{
+            width: 100%;
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+<div class="page" id="app">
+    <!-- Main Navbar-->
+    <header class="header">
+        <nav class="navbar">
+            <!-- Search Box-->
+            <div class="search-box">
+                <button class="dismiss"><i class="icon-close"></i></button>
+                <form id="searchForm" action="#" role="search">
+                    <input type="search" placeholder="What are you looking for..." class="form-control">
+                </form>
+            </div>
+            <div class="container-fluid">
+                <div class="navbar-holder d-flex align-items-center justify-content-between">
+                    <!-- Navbar Header-->
+                    <div class="navbar-header">
+                        <!-- Navbar Brand --><a href="index.html" class="navbar-brand d-none d-sm-inline-block">
+                            <div class="brand-text d-none d-lg-inline-block"><strong>微云</strong><span>讲师后台 </span></div>
+                            <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>BD</strong></div></a>
+                        <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
+                    </div>
+                    <!-- Navbar Menu -->
+                    <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                        <!-- Search-->
+                        <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i class="icon-search"></i></a></li>
+                        <!-- Notifications-->
+
+                        <!-- Messages                        -->
+
+                        <!-- Languages dropdown    -->
+
+                        <!-- Logout    -->
+                        <li class="nav-item"><a href="#" @click="logout(event)" class="nav-link logout"> <span class="d-none d-sm-inline" >退出</span><i class="fa fa-sign-out"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="page-content d-flex align-items-stretch">
+        <!-- Side Navbar -->
+        <nav class="side-navbar">
+            <!-- Sidebar Header-->
+            <div class="sidebar-header d-flex align-items-center">
+                <div class="avatar"><img :src="teacher.img" alt="..." class="img-fluid rounded-circle"></div>
+                <div class="title">
+                    <h1 class="h4">{{teacher.name}}</h1>
+                    <p>微云讲师</p>
+                </div>
+            </div>
+            <!-- Sidebar Navidation Menus--><span class="heading">Main</span>
+            <ul class="list-unstyled">
+                <li><a href="index.html"> <i class="icon-home"></i>主页</a></li>
+                <li  class="active"><a href="classManager.html"> <i class="icon-grid"></i>课程管理 </a></li>
+                <li><a href="orderManager.html"> <i class="fa fa-bar-chart"></i>订单管理 </a></li>
+                <li><a href="notify.html"> <i class="icon-mail"></i>消息通知</a></li>
+                <li><a href="bill.html"> <i class="icon-padnote"></i>账单列表</a></li>
+            </ul>
+        </nav>
+        <div class="content-inner" >
+            <!-- Page Header-->
+            <header class="page-header">
+                <div class="container-fluid">
+                    <h2 class="no-margin-bottom">答疑管理</h2>
+                </div>
+            </header>
+            <!-- Breadcrumb-->
+            <div class="breadcrumb-holder container-fluid">
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">主页</a> </li>
+                    <li class="breadcrumb-item"><a href="classManager.html">课程管理</a> </li>
+                    <li class="breadcrumb-item">答疑管理</li>
+
+                </ul>
+            </div>
+            <section class="tables">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <!-- 第一个卡片 开始-->
+                            <div class="card">
+                                <div class="card-close">
+                                    <div class="dropdown">
+                                        <button type="button" id="closeCard1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                                        <div aria-labelledby="closeCard1" class="dropdown-menu dropdown-menu-right has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                                    </div>
+                                </div>
+                                <div class="card-header d-flex align-items-center">
+                                    <h3 class="h4">发布交流信息</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <textarea class="class_comm" v-model.trim="commContent" placeholder="输入内容"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="button" value="发布"  class="btn btn-primary" @click="commSubmit()">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 第一个卡片 结束-->
+
+                            <!-- 第二个卡片 开始-->
+                            <div class="daily-feeds card">
+                                <div class="card-close">
+                                    <div class="dropdown">
+                                        <button type="button" id="closeCard1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-ellipsis-v"></i></button>
+                                        <div aria-labelledby="closeCard1" class="dropdown-menu dropdown-menu-right has-shadow"><a href="#" class="dropdown-item remove"> <i class="fa fa-times"></i>Close</a><a href="#" class="dropdown-item edit"> <i class="fa fa-gear"></i>Edit</a></div>
+                                    </div>
+                                </div>
+                                <div class="card-header d-flex align-items-center">
+                                    <h3 class="h4">全部交流信息</h3>
+                                </div>
+                                <div class="card-body">
+                                    <div class="question_list">
+                                        <div class="question_item" v-for="(item,k) in questionList">
+                                            <div class="item_left">
+                                                <img :src="item.userImg">
+                                            </div>
+                                            <div class="item_right">
+                                                <div class="item_username">
+                                                    {{item.username}}<span v-if="item.userType===2" class="item_teacher">讲师</span>
+                                                </div>
+                                                <div class="item_content">
+                                                    {{item.content}}
+                                                </div>
+                                                <div class="item_date">
+                                                    <span v-if="item.userId != teacher.id" class="reply_text" @click="replyClick(k,-1)">回复</span>
+                                                    <span v-else class="reply_text" @click="deleteComm(k)">删除</span>
+                                                    <span v-if="item.userId != teacher.id" class="reply_text" @click="complaintsMaster(k)">举报</span>
+                                                    {{item.createTime}}
+                                                </div>
+                                                <div class="reply_list">
+                                                    <div @mouseover="delDisplayHandle(k,key,false)" @mouseout="delDisplayHandle(k,key,true)" @click="replyClick(k,key)" v-for="(value,key) in item.replyList" class="quote has-shadow item_reply" style="margin-left: 0;margin-top: 13px;background-color: rgb(245,245,245);">
+                                                        {{value.postUsername}}<span v-if="value.postUserType === 2" class="item_teacher">讲师</span>&nbsp;<span style="color: #64cdcd">回复</span>&nbsp;
+                                                        {{value.srcUsername}}<span v-if="value.srcUserType === 2" class="item_teacher">讲师</span>：
+                                                        {{value.content}}
+                                                        <span :class="{'hidden':value.delDisplay}" class="item_delete" @click="replyDelete(event,k,key)">删除</span>
+                                                        <span :class="{'hidden':value.comDisplay}" class="item_delete" @click="complaints(event,k,key)">举报</span>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 第二个卡片 结束-->
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- 遮罩 回复用户-->
+            <div class="could_span" :class="{'hidden':isSpanHidden}" @click="spanHidden()">
+                <div class="span_body" @click="spanBodyClick(event)">
+
+                    <div class="card">
+                        <div class="card-header d-flex align-items-center">
+                            <h3 class="h4">回复&nbsp;{{srcReply.postUsername}}</h3>
+                        </div>
+                        <div class="card-body">
+                            <form>
+                                <div class="form-group">
+                                    <div class="form-group">
+                                        {{srcReply.postUsername}}<span v-if="srcReply.postUserType===2" class="item_teacher">讲师</span> <span  v-if="srcReply.srcUsername">回复 {{ srcReply.srcUsername}}<span v-if="srcReply.srcUserType ===2" class="item_teacher">讲师</span></span>：{{srcReply.content}}
+                                    </div>
+                                    <textarea v-model.trim="srcReply.replyContent" style="width: 100%;height: 100px;margin-top: 20px" :placeholder="'回复  ' + srcReply.postUsername"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="button" value="提交"  class="btn btn-primary" @click="replySubmit()">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- 遮罩 回复用户 end-->
+
+        </div>
+    </div>
+</div>
+<!-- JavaScript files-->
+<script src="/static/vendor/jquery/jquery.min.js"></script>
+<script src="/static/vendor/popper.js/umd/popper.min.js"> </script>
+<script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/vendor/jquery.cookie/jquery.cookie.js"> </script>
+<script src="/static/vendor/chart.js/Chart.min.js"></script>
+<script src="/static/vendor/jquery-validation/jquery.validate.min.js"></script>
+<!-- Main File-->
+<script src="/static/js/front.js"></script>
+<script src="/static/js/vue.js"></script>
+<script src="/static/js/axios.js"></script>
+<script>
+    function getQueryString(name){
+        let reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        let r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+
+    let vm = new Vue({
+        el:"#app",
+        data:{
+            classId:0,
+            questionList:[
+                // {
+                //     userImg:'/static/upload/user/testUser.jpg',
+                //     userId:"555",
+                //     username:"王小明",
+                //     createTime:"2020-01-11 22:12:22",
+                //     content:"本套教程属于特效制作的高级教程，包括地形编辑，岩石制作，树木制作，岩浆制作，烟",
+                //     userType:2,
+                //     replyList:[
+                //         {
+                //             postUsername:"小洪",
+                //             postUserId:"4545",
+                //             postContent:"京津冀",
+                //             srcUsername:"哈哈哈",
+                //             srcUserId:"465",
+                //             postTime:"2020-01-11 22:12:22",
+                //             postUserType:2,
+                //             srcUserType:1
+                //         }
+                //     ]
+                // },
+                // {
+                //     postUserImg:'/static/upload/user/testUser.jpg',
+                //     postUserId:"555",
+                //     postUsername:"王小明",
+                //     createTime:"2020-01-11 22:12:22",
+                //     content:"本套教程属于特效制作的高级教程，包括地形编辑，岩石制作，树木制作，岩浆制作，烟",
+                //     userType:2,
+                //     replyList:[
+                //         {
+                //             postUsername:"小洪",
+                //             postUserId:"4545",
+                //             content:"京津冀",
+                //             srcUsername:"哈哈哈",
+                //             srcUserId:"465",
+                //             postTime:"2020-01-11 22:12:22",
+                //             postUserType:2,
+                //             srcUserType:1
+                //         }
+                //     ]
+                // }
+            ],
+            isSpanHidden:true,
+            srcReply:{},
+            teacher:{},
+            commContent:""
+        },
+        mounted:function(){
+            this.classId = parseInt(getQueryString("classId"));
+            httpPost({
+                url:"/teacher/getQuestionList",
+                data:{
+                    classId:this.classId
+                },
+                success(res){
+                    res.content.forEach(value =>{
+                        let index = value.replyContentHeader;
+                        let arrTmp = [];
+                        while (true){
+                            if(!index){
+                                break;
+                            }
+                            value.replyList[index].commIndex = index;
+                            value.replyList[index].commId = value.id;
+                            value.replyList[index].delDisplay = true;
+                            value.replyList[index].comDisplay = true;
+                            arrTmp.push(value.replyList[index]);
+                            index = value.replyList[index].next;
+                        }
+                        value.replyList = arrTmp;
+                        value.createTime = dateTime(value.createTime * 1000);
+                    });
+                    vm.questionList = res.content;
+                },
+                complete(res){
+                    vm.teacher = res.teacher;
+                }
+            })
+        },
+        methods:{
+            logout(e){
+                e.preventDefault();
+                httpGet({
+                    url:"/teacher/teacherLogout",
+                    success(res){
+                        location.href = "/static/html/teacher/login.html"
+                    },
+                    fail(){
+                        showError("退出失败")
+                    }
+                })
+            },
+            spanHidden:function(){
+                this.isSpanHidden = true;
+                vm.srcReply = {};
+            },
+            spanBodyClick:function (e) {
+                e.stopPropagation();
+            },
+            delDisplayHandle(k,key,isDisplay){
+                if(vm.questionList[k].replyList[key].postUserId == vm.teacher.id){
+                    vm.questionList[k].replyList[key].delDisplay = isDisplay;
+                }else{
+                    vm.questionList[k].replyList[key].comDisplay = isDisplay;
+                }
+
+            },
+            replyClick(k,key){
+                if(key === -1){
+                    if(vm.questionList[k].id == vm.teacher.id){
+                        return;
+                    }
+                    vm.srcReply = {
+                        commId:vm.questionList[k].id,
+                        commIndex:"",
+                        postUsername:vm.questionList[k].username,
+                        content:vm.questionList[k].content,
+                        postUserType:vm.questionList[k].userType
+                    }
+                }else{
+                    if(vm.questionList[k].replyList[key].postUserId == vm.teacher.id){
+                        return;
+                    }
+                    vm.srcReply = vm.questionList[k].replyList[key];
+                }
+                vm.isSpanHidden = false;
+            },
+            //提交回复
+            replySubmit(){
+                httpPost({
+                    url:"/teacher/teacherReply",
+                    data:{
+                        commId:this.srcReply.commId,
+                        commIndex:this.srcReply.commIndex,
+                        content:this.srcReply.replyContent
+                    },
+                    success(res) {
+                        location.reload()
+                    }
+                });
+            },
+            complaintsMaster(k){
+                let comm = vm.questionList[k];
+                httpPost({
+                    url:"/teacher/teacherCommPlaints",
+                    data:{
+                        commIndex:"0",
+                        commId:comm.id
+                    },
+                    success(res){
+                        showSuccess("举报成功")
+                    },
+                    fail(res){
+                        console.log(res);
+                        showError("举报失败");
+                    }
+                })
+            },
+            complaints(event,k,key){
+                event.stopPropagation();
+                let reply = vm.questionList[k].replyList[key];
+                httpPost({
+                    url:"/teacher/teacherCommPlaints",
+                    data:{
+                        commIndex:reply.commIndex,
+                        commId:reply.commId
+                    },
+                    success(res){
+                        showSuccess("举报成功")
+                    },
+                    fail(res){
+                        console.log(res);
+                        showError("举报失败");
+                    }
+                })
+            },
+            replyDelete(event,k,key){
+                event.stopPropagation();
+                let reply = vm.questionList[k].replyList[key];
+                httpPost({
+                    url:"/teacher/deleteTeacherComm",
+                    data:{
+                        commIndex:reply.commIndex,
+                        commId:reply.commId
+                    },
+                    success(res){
+                        location.reload();
+                    }
+                })
+            },
+            commSubmit(){
+                if(!vm.commContent){
+                    showError("请填写发布内容");
+                    return;
+                }
+                httpPost({
+                    url:"/teacher/addComm",
+                    data:{
+                        content:vm.commContent,
+                        classId:vm.classId,
+                    },
+                    success(res){
+                        location.reload();
+                    },
+                    fail(){
+                        showError("发布失败")
+                    }
+                });
+                console.log(33)
+            },
+            deleteComm(key){
+                console.log(vm.questionList[key].id)
+                httpPost({
+                    url:"/teacher/teacherDeleteComm",
+                    data:{
+                        commId:vm.questionList[key].id
+                    },
+                    success(res){
+                        location.reload();
+                    }
+                })
+            }
+        },
+        filters:{
+
+        }
+    })
+</script>
+</body>
+</html>
